@@ -2,12 +2,76 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; media-src 'self' blob:" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; media-src 'self' file:; style-src 'self'" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Silence But Random</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>Silence But Random</h1>
-  <p>Setup works. Audio clips, scheduling, and settings coming next.</p>
+  <header class="card session">
+    <div class="session-info">
+      <h1>Silence But Random</h1>
+      <p id="status" class="status"></p>
+      <div id="progress" class="progress" hidden><div id="progressBar"></div></div>
+    </div>
+    <button id="toggle" class="primary big">Start session</button>
+  </header>
+
+  <main>
+    <section class="card">
+      <div class="card-head">
+        <h2>Sounds</h2>
+        <div class="actions">
+          <button id="newFolder">+ New folder</button>
+          <button id="importFolder">Import folder…</button>
+        </div>
+      </div>
+      <div id="folders" class="folders"></div>
+    </section>
+
+    <section id="settings" class="card">
+      <h2>Settings</h2>
+
+      <div class="field">
+        <label>Time between sounds</label>
+        <div class="row">
+          <input type="number" id="intervalMin" min="0" step="any" />
+          <span>to</span>
+          <input type="number" id="intervalMax" min="0" step="any" />
+          <select id="intervalUnit">
+            <option value="s">seconds</option>
+            <option value="m">minutes</option>
+          </select>
+        </div>
+        <p class="hint">After each sound finishes, a random wait in this range is picked.</p>
+      </div>
+
+      <div class="field">
+        <label>Session length</label>
+        <div class="row">
+          <input type="number" id="durationValue" min="0" step="any" />
+          <select id="durationUnit">
+            <option value="m">minutes</option>
+            <option value="h">hours</option>
+          </select>
+          <label class="check"><input type="checkbox" id="unlimited" /> No limit</label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="volume">Volume <span id="volumeLabel" class="muted"></span></label>
+        <input type="range" id="volume" min="0" max="100" />
+      </div>
+
+      <div class="field checks">
+        <label class="check"><input type="checkbox" id="avoidRepeat" /> Don't repeat the same sound twice in a row</label>
+        <label class="check"><input type="checkbox" id="showNext" /> Show countdown to the next sound</label>
+        <label class="check"><input type="checkbox" id="keepAwake" /> Keep computer awake during a session</label>
+      </div>
+    </section>
+  </main>
+
+  <div id="toast" class="toast" hidden></div>
   <script src="renderer.js"></script>
 </body>
 </html>
